@@ -23,8 +23,9 @@ export default class PanResponderTest extends Component {
       onMoveShouldSetResponderCapture: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
 
-      // Set initial value of x and y to 0 (center of the screen)
+      // Set initial value of x and y to current state
       onPanResponderGrant: (e, gestureState) => {
+        this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
         this.state.pan.setValue({x: 0, y: 0});
       },
 
