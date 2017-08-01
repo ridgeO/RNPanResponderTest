@@ -10,6 +10,14 @@ import {
 
 export default class PanResponderTest extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      pan: new Animated.ValueXY()
+    };
+  }
+
   componentWillMount() {
     this._panResponder = PanResponder.create({
       onMoveShouldSetResponderCapture: () => true,
