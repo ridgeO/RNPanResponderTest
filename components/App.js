@@ -3,14 +3,34 @@ import {
   AppRegistry,
   StyleSheet,
   View,
-  Image
+  Image,
+  PanResponder,
+  Animated
 } from 'react-native';
 
 export default class PanResponderTest extends Component {
+
+  componentWillMount() {
+    this._panResponder = PanResponder.create({
+      onMoveShouldSetResponderCapture: () => true,
+      onMoveShouldSetPanResponderCapture: () => true,
+
+      onPanResponderGrant: (e, gestureState) => {
+      },
+
+      onPanResponderMove: Animated.event([
+      ]),
+
+      onPanResponderRelease: (e, {vx, vy}) => {
+      }
+    });
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.image} source={require('../assets/platypus_logo_small.jpg')} />
+        <Animated.View {...this._panResponder.panHandlers}>
+          <Image style={styles.image} source={require('../assets/platypus_logo_small.jpg')} />
+        </Animated.View>
       </View>
     );
   }
