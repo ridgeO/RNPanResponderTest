@@ -14,7 +14,8 @@ export default class PanResponderTest extends Component {
     super(props);
 
     this.state = {
-      pan: new Animated.ValueXY()
+      pan: new Animated.ValueXY(),
+      scale: new Animated.Value(1)
     };
   }
 
@@ -23,10 +24,15 @@ export default class PanResponderTest extends Component {
       onMoveShouldSetResponderCapture: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
 
-      // Set initial value of x and y to current state
       onPanResponderGrant: (e, gestureState) => {
+        // Set initial value of x and y to current state
         this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
         this.state.pan.setValue({x: 0, y: 0});
+        // Scale up object on drag/pan
+        Animated.spring(
+          this.state.scale,
+          { toValue: 1.1, friction: 3 }
+        ).start();
       },
 
       // Set Delta values to the states pan position when object is dragged/panned
@@ -37,19 +43,27 @@ export default class PanResponderTest extends Component {
       onPanResponderRelease: (e, {vx, vy}) => {
         // Flatten the offset to avoid erratic behavior
         this.state.pan.flattenOffset();
+        // Scale down object on release
+        Animated.spring(
+          this.state.scale,
+          { toValue: 1, friction: 3 }
+        ).start();
       }
     });
   }
   render() {
 
     // Destructure the value of pan from the state
-    let { pan } = this.state;
+    let { pan, scale } = this.state;
 
     // Calculate the x and y transform from the pan value
     let [translateX, translateY] = [pan.x, pan.y];
 
+    // Set rotation to a default 0
+    let rotate = '0deg';
+
     // Calculate the transform property and set it as a value for style
-    let imageStyle = {transform: [{translateX}, {translateY}]};
+    let imageStyle = {transform: [{translateX}, {translateY}, {rotate}, {scale}]};
 
     return (
       <View style={styles.container}>
