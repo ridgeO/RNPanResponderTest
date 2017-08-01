@@ -35,6 +35,8 @@ export default class PanResponderTest extends Component {
       ]),
 
       onPanResponderRelease: (e, {vx, vy}) => {
+        // Flatten the offset to avoid erratic behavior
+        this.state.pan.flattenOffset();
       }
     });
   }
