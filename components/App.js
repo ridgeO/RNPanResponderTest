@@ -23,10 +23,14 @@ export default class PanResponderTest extends Component {
       onMoveShouldSetResponderCapture: () => true,
       onMoveShouldSetPanResponderCapture: () => true,
 
+      // Set initial value of x and y to 0 (center of the screen)
       onPanResponderGrant: (e, gestureState) => {
+        this.state.pan.setValue({x: 0, y: 0});
       },
 
+      // Set Delta values to the states pan position when object is dragged/panned
       onPanResponderMove: Animated.event([
+        null, {dx: this.state.pan.x, dy: this.state.pan.y},
       ]),
 
       onPanResponderRelease: (e, {vx, vy}) => {
@@ -34,9 +38,19 @@ export default class PanResponderTest extends Component {
     });
   }
   render() {
+
+    // Destructure the value of pan from the state
+    let { pan } = this.state;
+
+    // Calculate the x and y transform from the pan value
+    let [translateX, translateY] = [pan.x, pan.y];
+
+    // Calculate the transform property and set it as a value for style
+    let imageStyle = {transform: [{translateX}, {translateY}]};
+
     return (
       <View style={styles.container}>
-        <Animated.View {...this._panResponder.panHandlers}>
+        <Animated.View style={imageStyle} {...this._panResponder.panHandlers}>
           <Image style={styles.image} source={require('../assets/platypus_logo_small.jpg')} />
         </Animated.View>
       </View>
