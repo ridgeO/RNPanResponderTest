@@ -61,8 +61,9 @@ export default class PanResponderTest extends Component {
     // Calculate the x and y transform from the pan value
     let [translateX, translateY] = [pan.x, pan.y];
 
-    // Set rotation to a default 0
-    let rotate = '0deg';
+    // Calculate rotation based on pan values
+    console.log(translateX._value)
+    let rotate = this.state.pan.x.interpolate({inputRange: [-200, 0, 200], outputRange: ["-30deg", "0deg", "30deg"]})
 
     // Calculate the transform property and set it as a value for style
     let imageStyle = {transform: [{translateX}, {translateY}, {rotate}, {scale}]};
