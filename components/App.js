@@ -41,8 +41,10 @@ export default class PanResponderTest extends Component {
       ]),
 
       onPanResponderRelease: (e, {vx, vy}) => {
-        // Flatten the offset to avoid erratic behavior
-        this.state.pan.flattenOffset();
+        // Return icon back to center
+        Animated.spring(this.state.pan, {
+          toValue: 0
+        }).start();
         // Scale down object on release
         Animated.spring(
           this.state.scale,
